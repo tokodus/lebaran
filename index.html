@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Eid Mubarak</title>
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #FFE5EC 0%, #FFC9E0 50%, #FFB5D8 100%);
+      font-family: 'Josefin Sans', sans-serif;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Animated clouds */
+    .cloud {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 100px;
+      animation: float-cloud 25s infinite linear;
+    }
+
+    .cloud::before,
+    .cloud::after {
+      content: '';
+      position: absolute;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 100px;
+    }
+
+    .cloud-1 {
+      width: 100px;
+      height: 35px;
+      top: 20%;
+      left: -120px;
+    }
+
+    .cloud-1::before {
+      width: 50px;
+      height: 50px;
+      top: -25px;
+      left: 10px;
+    }
+
+    .cloud-1::after {
+      width: 60px;
+      height: 40px;
+      top: -15px;
+      right: 10px;
+    }
+
+    .cloud-2 {
+      width: 80px;
+      height: 30px;
+      top: 60%;
+      left: -100px;
+      animation-delay: 8s;
+      animation-duration: 30s;
+    }
+
+    .cloud-2::before {
+      width: 40px;
+      height: 40px;
+      top: -20px;
+      left: 8px;
+    }
+
+    .cloud-2::after {
+      width: 50px;
+      height: 35px;
+      top: -12px;
+      right: 8px;
+    }
+
+    @keyframes float-cloud {
+      0% {
+        left: -120px;
+      }
+      100% {
+        left: calc(100% + 120px);
+      }
+    }
+
+    /* Floating particles */
+    .particle {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 50%;
+      animation: float-particle 8s infinite ease-in-out;
+    }
+
+    @keyframes float-particle {
+      0%, 100% {
+        transform: translateY(0) translateX(0);
+        opacity: 0.3;
+      }
+      25% {
+        transform: translateY(-20px) translateX(10px);
+        opacity: 0.8;
+      }
+      50% {
+        transform: translateY(-40px) translateX(-10px);
+        opacity: 0.5;
+      }
+      75% {
+        transform: translateY(-20px) translateX(15px);
+        opacity: 0.8;
+      }
+    }
+
+    .envelope-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 360px;
+      height: 480px;
+      transition: transform 0.4s ease;
+    }
+
+    .envelope-wrapper:hover {
+      transform: scale(1.03) rotate(2deg);
+    }
+
+    .envelope {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: #ffffff;
+      border-radius: 15px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+      transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    /* Envelope top flap */
+    .envelope-flap {
+      position: absolute;
+      width: 100%;
+      height: 60%;
+      bottom: 0;
+      left: 0;
+      background: linear-gradient(135deg, #FF6B9D 0%, #FF8FB3 100%);
+      border-radius: 0 0 15px 15px;
+      transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      transform-origin: bottom;
+      z-index: 2;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .envelope-flap::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 60px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 0 0 150% 150%;
+    }
+
+    .envelope-flap.open {
+      transform: rotateX(180deg);
+    }
+
+    .flap-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .envelope-flap.open .flap-text {
+      opacity: 0;
+    }
+
+    /* Decorative pattern on flap */
+    .flap-pattern {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) rotate(90deg);
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 48px;
+      font-weight: 700;
+      letter-spacing: 8px;
+    }
+
+    /* Card content */
+    .card-content {
+      position: absolute;
+      width: 90%;
+      height: 85%;
+      top: 7.5%;
+      left: 5%;
+      background: linear-gradient(135deg, #FFFAFD 0%, #FFF0F7 100%);
+      border-radius: 12px;
+      padding: 30px 20px;
+      text-align: center;
+      box-shadow: inset 0 0 30px rgba(255, 107, 157, 0.1);
+      z-index: 1;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease;
+    }
+
+    .envelope-flap.open ~ .card-content {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.3s;
+    }
+
+    .card-icon {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 15px;
+      background: linear-gradient(135deg, #FF6B9D 0%, #C850C0 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 20px rgba(255, 107, 157, 0.4);
+      animation: bounce 2s infinite ease-in-out;
+    }
+
+    @keyframes bounce {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    .moon-star {
+      font-size: 50px;
+      filter: drop-shadow(0 2px 5px rgba(255, 255, 255, 0.5));
+    }
+
+    .card-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: #FF6B9D;
+      margin-bottom: 8px;
+      text-shadow: 0 2px 4px rgba(255, 107, 157, 0.2);
+    }
+
+    .card-year {
+      font-size: 13px;
+      color: #FF8FB3;
+      font-weight: 600;
+      letter-spacing: 2px;
+      margin-bottom: 15px;
+    }
+
+    .time-box {
+      display: inline-block;
+      background: linear-gradient(135deg, #FF6B9D 0%, #C850C0 100%);
+      color: white;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
+    }
+
+    .divider-line {
+      width: 50px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #FF8FB3, transparent);
+      margin: 12px auto;
+    }
+
+    .arabic-text {
+      color: #FF6B9D;
+      font-size: 15px;
+      line-height: 1.6;
+      margin: 10px 0;
+      font-weight: 500;
+    }
+
+    .message-text {
+      color: #666;
+      font-size: 13px;
+      line-height: 1.6;
+      margin: 10px 0;
+    }
+
+    .thr-btn {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 10px 24px;
+      background: linear-gradient(135deg, #4FACFE 0%, #00F2FE 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: 1px;
+      box-shadow: 0 6px 15px rgba(79, 172, 254, 0.4);
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+    }
+
+    .thr-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(79, 172, 254, 0.5);
+    }
+
+    /* Stamp decoration */
+    .stamp {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      border: 3px dashed #FF6B9D;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: rotate(15deg);
+      background: rgba(255, 255, 255, 0.5);
+      z-index: 3;
+    }
+
+    .stamp-text {
+      font-size: 10px;
+      color: #FF6B9D;
+      font-weight: 700;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .envelope-wrapper {
+        max-width: 95%;
+        height: 500px;
+      }
+
+      .card-title {
+        font-size: 24px;
+      }
+
+      .card-icon {
+        width: 80px;
+        height: 80px;
+      }
+
+      .moon-star {
+        font-size: 40px;
+      }
+
+      .flap-text {
+        font-size: 18px;
+      }
+
+      .arabic-text {
+        font-size: 14px;
+      }
+
+      .message-text {
+        font-size: 12px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .envelope-wrapper {
+        height: 480px;
+      }
+
+      .card-content {
+        padding: 25px 15px;
+      }
+
+      .card-title {
+        font-size: 22px;
+      }
+
+      .card-icon {
+        width: 70px;
+        height: 70px;
+        margin-bottom: 10px;
+      }
+    }
+
+    /* Instruction hint */
+    .hint {
+      position: absolute;
+      bottom: -50px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      animation: hint-pulse 2s infinite;
+      opacity: 1;
+      transition: opacity 0.5s;
+    }
+
+    .hint.hidden {
+      opacity: 0;
+    }
+
+    @keyframes hint-pulse {
+      0%, 100% {
+        transform: translateX(-50%) translateY(0);
+      }
+      50% {
+        transform: translateX(-50%) translateY(-5px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Clouds -->
+  <div class="cloud cloud-1"></div>
+  <div class="cloud cloud-2"></div>
+
+  <!-- Particles -->
+  <div class="particle" style="top: 15%; left: 20%; animation-delay: 0s;"></div>
+  <div class="particle" style="top: 25%; left: 70%; animation-delay: 1s;"></div>
+  <div class="particle" style="top: 60%; left: 15%; animation-delay: 2s;"></div>
+  <div class="particle" style="top: 70%; left: 80%; animation-delay: 3s;"></div>
+  <div class="particle" style="top: 40%; left: 85%; animation-delay: 1.5s;"></div>
+  <div class="particle" style="top: 80%; left: 30%; animation-delay: 2.5s;"></div>
+
+  <div class="envelope-wrapper">
+    <!-- Stamp -->
+    <div class="stamp">
+      <div class="stamp-text">1445<br>H</div>
+    </div>
+
+    <!-- Main Envelope -->
+    <div class="envelope">
+      <!-- Envelope Flap -->
+      <div class="envelope-flap" id="flap">
+        <div class="flap-text">✨ TAP DISINI ✨</div>
+        <div class="flap-pattern">❋ ❋</div>
+      </div>
+
+      <!-- Card Content -->
+      <div class="card-content">
+        <div class="card-icon">
+          <span class="moon-star">🌙</span>
+        </div>
+
+        <h1 class="card-title">Eid Mubarak</h1>
+        <p class="card-year">✨ HAPPY EID AL-FITR ✨</p>
+
+        <div class="time-box" id="timeDisplay">Loading...</div>
+
+        <div class="divider-line"></div>
+
+        <p class="arabic-text">تَقَبَّلَ اللَّهُ مِنَّا وَمِنْكُمْ</p>
+        <p class="arabic-text">كُلُّ عاَمٍ وَأَنْتُمْ بِخَيْرٍ</p>
+
+        <div class="divider-line"></div>
+
+        <p class="message-text">
+          Mohon Maaf jika ada kesalahan<br>
+          yang disengaja maupun tidak disengaja ya 🙏
+        </p>
+
+        <p class="message-text">
+          Semoga berkah selalu menyertai kita
+        </p>
+
+        <a href="#thr" class="thr-btn">🎁 Test</a>
+      </div>
+    </div>
+
+    <div class="hint" id="hint">👆 Tap amplop di atas</div>
+  </div>
+
+  <script>
+    // Time display
+    function updateTime() {
+      const now = new Date();
+      const time = now.toLocaleTimeString('id-ID', { 
+        timeZone: "Asia/Jakarta",
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      });
+      document.getElementById('timeDisplay').textContent = time + ' WIB';
+    }
+
+    setInterval(updateTime, 1000);
+    updateTime();
+
+    // Envelope flap interaction
+    const flap = document.getElementById('flap');
+    const hint = document.getElementById('hint');
+    let isOpen = false;
+
+    flap.addEventListener('click', function() {
+      isOpen = !isOpen;
+      flap.classList.toggle('open');
+      
+      if (isOpen) {
+        hint.classList.add('hidden');
+      } else {
+        setTimeout(() => {
+          hint.classList.remove('hidden');
+        }, 300);
+      }
+    });
+
+    // Auto-hide hint after 5 seconds
+    setTimeout(() => {
+      hint.style.opacity = '0.5';
+    }, 5000);
+  </script>
+</body>
+</html>
