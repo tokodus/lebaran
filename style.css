@@ -1,0 +1,1037 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: rgb(0, 51, 102);
+    min-height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+#starsCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100vh;
+}
+
+/* Three.js Canvas Container */
+#canvas-container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+}
+
+#canvas-container.opened {
+    cursor: default;
+}
+
+/* Loading */
+.loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 1000;
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+}
+
+.loading.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(212, 175, 55, 0.3);
+    border-top: 4px solid #d4af37;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading p {
+    color: #2c5f2d;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* External Floating Decorations */
+.external-decorations {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9;
+}
+
+/* Floating Ketupat */
+.floating-ketupat {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+}
+
+.external-decorations .floating-ketupat {
+    animation: decorInstantAppear 0.3s ease-out 0.8s forwards, floatSlow 4s ease-in-out 1.2s infinite;
+}
+
+.ketupat-float-1 {
+    top: 15%;
+    left: 8%;
+}
+
+.ketupat-float-2 {
+    top: 25%;
+    right: 10%;
+    animation-delay: 0.9s, 1.3s !important;
+}
+
+.ketupat-float-3 {
+    bottom: 20%;
+    left: 12%;
+    animation-delay: 1s, 1.4s !important;
+}
+
+.ketupat-float-4 {
+    bottom: 15%;
+    right: 8%;
+    animation-delay: 1.1s, 1.5s !important;
+}
+
+.ketupat-diamond {
+    width: 45px;
+    height: 45px;
+    background: linear-gradient(135deg, #2c5f2d 0%, #4a8f4c 100%);
+    transform: rotate(45deg);
+    border: 3px solid #d4af37;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(44, 95, 45, 0.4);
+}
+
+.ketupat-diamond::before,
+.ketupat-diamond::after {
+    content: '';
+    position: absolute;
+    background: #d4af37;
+}
+
+.ketupat-diamond::before {
+    width: 100%;
+    height: 2px;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+}
+
+.ketupat-diamond::after {
+    width: 2px;
+    height: 100%;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+}
+
+/* Floating Moon & Stars */
+.floating-moon {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+}
+
+.external-decorations .floating-moon {
+    animation: decorInstantAppear 0.3s ease-out 0.9s forwards, floatSlow 5s ease-in-out 1.3s infinite;
+}
+
+.moon-float-1 {
+    top: 10%;
+    right: 15%;
+}
+
+.moon-float-2 {
+    bottom: 25%;
+    left: 10%;
+    animation-delay: 1s, 1.4s !important;
+}
+
+.crescent {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background: #d4af37;
+    position: relative;
+    box-shadow: 0 0 25px rgba(212, 175, 55, 0.7);
+}
+
+.crescent::before {
+    content: '';
+    position: absolute;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: rgba(0, 51, 102, 0.9);
+    top: 5px;
+    left: 12px;
+}
+
+.star {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 22px;
+    height: 22px;
+    background: #d4af37;
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.8));
+}
+
+/* Islamic Lanterns */
+.lantern {
+    position: absolute;
+    width: 40px;
+    height: 70px;
+}
+
+.external-decorations .lantern {
+    animation: decorInstantAppear 0.3s ease-out 1s forwards, swingLantern 3s ease-in-out 1.5s infinite;
+}
+
+.lantern-1 {
+    top: 5%;
+    left: 20%;
+}
+
+.lantern-2 {
+    top: 8%;
+    right: 25%;
+    animation-delay: 1.1s, 1.6s !important;
+}
+
+.lantern-top {
+    width: 15px;
+    height: 8px;
+    background: #d4af37;
+    margin: 0 auto;
+    border-radius: 2px 2px 0 0;
+}
+
+.lantern-body {
+    width: 40px;
+    height: 50px;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(212, 175, 55, 0.5) 100%);
+    border: 3px solid #d4af37;
+    border-radius: 5px;
+    margin-top: 2px;
+    box-shadow: 0 5px 20px rgba(212, 175, 55, 0.5);
+    position: relative;
+}
+
+.lantern-body::before {
+    content: '';
+    position: absolute;
+    width: 80%;
+    height: 2px;
+    background: #d4af37;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.lantern-bottom {
+    width: 20px;
+    height: 10px;
+    background: #d4af37;
+    margin: 0 auto;
+    border-radius: 0 0 5px 5px;
+}
+
+/* Small Scattered Stars */
+.small-star {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background: #d4af37;
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.8));
+}
+
+.external-decorations .small-star {
+    animation: twinkle 2s ease-in-out infinite;
+}
+
+.star-1 {
+    top: 35%;
+    left: 5%;
+    animation-delay: 0.5s !important;
+}
+
+.star-2 {
+    top: 45%;
+    right: 7%;
+    animation-delay: 0.8s !important;
+}
+
+.star-3 {
+    top: 60%;
+    left: 15%;
+    animation-delay: 1.2s !important;
+}
+
+.star-4 {
+    top: 70%;
+    right: 12%;
+    animation-delay: 1.5s !important;
+}
+
+.star-5 {
+    top: 20%;
+    left: 30%;
+    animation-delay: 0.3s !important;
+}
+
+.star-6 {
+    bottom: 10%;
+    right: 30%;
+    animation-delay: 1s !important;
+}
+
+/* Floating Animations */
+@keyframes floatSlow {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-20px) rotate(10deg);
+    }
+}
+
+@keyframes swingLantern {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(5deg);
+    }
+    75% {
+        transform: rotate(-5deg);
+    }
+}
+
+@keyframes twinkle {
+    0%, 100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.3);
+    }
+}
+
+/* Confetti Stripes Animation */
+.confetti-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 15;
+    overflow: hidden;
+}
+
+.confetti-stripe {
+    position: absolute;
+    width: 10px;
+    height: 40px;
+    top: -50px;
+    opacity: 0.9;
+    animation: fallStripe 3s ease-in forwards;
+    border-radius: 2px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes fallStripe {
+    0% {
+        transform: translateY(-50px) rotate(0deg);
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.9;
+    }
+    100% {
+        transform: translateY(calc(100vh + 50px)) rotate(720deg);
+        opacity: 0.3;
+    }
+}
+
+/* Add shimmer effect to stripes */
+.confetti-stripe::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.3) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    border-radius: 2px;
+}
+
+/* Content Overlay */
+.content-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 10;
+    opacity: 0;
+}
+
+.greeting-card {
+    width: 90%;
+    max-width: 550px;
+    background: 
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 20px,
+            rgba(212, 175, 55, 0.08) 20px,
+            rgba(212, 175, 55, 0.08) 40px
+        ),
+        repeating-linear-gradient(
+            -45deg,
+            transparent,
+            transparent 20px,
+            rgba(44, 95, 45, 0.06) 20px,
+            rgba(44, 95, 45, 0.06) 40px
+        ),
+        radial-gradient(circle at 30% 40%, rgba(212, 175, 55, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 70% 60%, rgba(44, 95, 45, 0.10) 0%, transparent 50%),
+        linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(250,245,235,0.98) 100%);
+    border-radius: 25px;
+    padding: 60px 45px;
+    box-shadow: 0 35px 90px rgba(0,0,0,0.4);
+    border: 4px solid #d4af37;
+    position: relative;
+    backdrop-filter: blur(10px);
+    overflow: visible;
+    
+    transform: scale(0);
+    opacity: 0;
+}
+
+/* Card Background Pattern (Fixed, non-moving) */
+.card-background-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.bg-mosque {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.content-overlay.visible {
+    opacity: 1;
+}
+
+.content-overlay.visible .greeting-card {
+    animation: cardInstantAppear 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes cardInstantAppear {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    1% {
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.greeting-text {
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.greeting-text h1 {
+    font-size: 38px;
+    color: #2c5f2d;
+    margin-bottom: 15px;
+    font-weight: 700;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.15);
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.content-overlay.visible .greeting-text h1 {
+    animation: textInstantReveal 0.3s ease-out 0.1s forwards;
+}
+
+.greeting-text h2 {
+    font-size: 52px;
+    color: #d4af37;
+    margin-bottom: 20px;
+    font-weight: 800;
+    text-shadow: 3px 3px 8px rgba(212, 175, 55, 0.4);
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.content-overlay.visible .greeting-text h2 {
+    animation: textInstantReveal 0.3s ease-out 0.2s forwards;
+}
+
+.greeting-text .year {
+    font-size: 22px;
+    color: #666;
+    margin-bottom: 30px;
+    font-weight: 600;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.content-overlay.visible .greeting-text .year {
+    animation: textInstantReveal 0.3s ease-out 0.3s forwards;
+}
+
+.greeting-text .dua {
+    font-size: 19px;
+    color: #2c5f2d;
+    line-height: 1.9;
+    font-style: italic;
+    font-weight: 500;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.content-overlay.visible .greeting-text .dua {
+    animation: textInstantReveal 0.3s ease-out 0.4s forwards;
+}
+
+@keyframes textInstantReveal {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes decorInstantAppear {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Click Instruction */
+.click-instruction {
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    opacity: 0;
+    animation: fadeInInstruction 1s ease-out 1s forwards, bounce 2s ease-in-out 2s infinite;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.click-instruction.hidden {
+    animation: fadeOut 0.5s ease-out forwards;
+}
+
+@keyframes fadeInInstruction {
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateX(-50%) translateY(0);
+    }
+    50% {
+        transform: translateX(-50%) translateY(-15px);
+    }
+}
+
+.hand-icon {
+    font-size: 48px;
+    margin-bottom: 10px;
+    animation: pointFinger 1s ease-in-out infinite;
+}
+
+@keyframes pointFinger {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+.click-instruction p {
+    font-size: 18px;
+    color: #2c5f2d;
+    font-weight: 600;
+    text-shadow: 1px 1px 3px rgba(255,255,255,0.9);
+    background: rgba(255,255,255,0.85);
+    padding: 12px 25px;
+    border-radius: 12px;
+    backdrop-filter: blur(5px);
+    border: 2px solid rgba(212, 175, 55, 0.3);
+}
+
+/* ============================================
+   ORNAMEN KLASIK UNTUK GREETING CARD
+   ============================================ */
+
+/* OUTER CORNER ORNAMENTS - Outside the card */
+.outer-ornament {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    pointer-events: none;
+    z-index: 3;
+    opacity: 0;
+}
+
+.outer-ornament svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 2px 6px rgba(212, 175, 55, 0.4));
+}
+
+.outer-top-left {
+    top: -10px;
+    left: -10px;
+}
+
+.outer-top-right {
+    top: -10px;
+    right: -10px;
+    transform: scaleX(-1);
+}
+
+.outer-bottom-left {
+    bottom: -10px;
+    left: -10px;
+    transform: scaleY(-1);
+}
+
+.outer-bottom-right {
+    bottom: -10px;
+    right: -10px;
+    transform: scale(-1, -1);
+}
+
+/* INNER CORNER ORNAMENTS - Inside the card */
+.inner-ornament {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    pointer-events: none;
+    z-index: 3;
+    opacity: 0;
+}
+
+.inner-ornament svg {
+    width: 100%;
+    height: 100%;
+}
+
+.inner-top-left {
+    top: 25px;
+    left: 25px;
+}
+
+.inner-top-right {
+    top: 25px;
+    right: 25px;
+    transform: scaleX(-1);
+}
+
+.inner-bottom-left {
+    bottom: 25px;
+    left: 25px;
+    transform: scaleY(-1);
+}
+
+.inner-bottom-right {
+    bottom: 25px;
+    right: 25px;
+    transform: scale(-1, -1);
+}
+
+/* Center Decorative Lines */
+.decorative-line {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: 40px;
+    z-index: 3;
+    opacity: 0;
+}
+
+.decorative-line svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 1px 3px rgba(212, 175, 55, 0.4));
+}
+
+.top-line {
+    top: -35px;
+}
+
+.bottom-line {
+    bottom: -35px;
+}
+
+/* Center Islamic Symbol Watermark */
+.center-symbol {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120px;
+    height: 120px;
+    opacity: 0.08;
+    z-index: 1;
+}
+
+/* Animasi untuk ornamen muncul */
+.content-overlay.visible .outer-ornament {
+    animation: ornamentFadeIn 0.5s ease-out 0.3s forwards;
+}
+
+.content-overlay.visible .inner-ornament {
+    animation: ornamentFadeIn 0.5s ease-out 0.4s forwards;
+}
+
+.content-overlay.visible .decorative-line {
+    animation: ornamentFadeIn 0.5s ease-out 0.5s forwards;
+}
+
+@keyframes ornamentFadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .greeting-card {
+        padding: 45px 35px;
+        max-width: 90%;
+    }
+    
+    .greeting-text h1 {
+        font-size: 30px;
+        margin-bottom: 12px;
+    }
+    
+    .greeting-text h2 {
+        font-size: 42px;
+        margin-bottom: 15px;
+    }
+    
+    .greeting-text .year {
+        font-size: 18px;
+        margin-bottom: 25px;
+    }
+    
+    .greeting-text .dua {
+        font-size: 17px;
+    }
+    
+    /* Smaller external decorations on mobile */
+    .floating-ketupat {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .ketupat-diamond {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .floating-moon {
+        width: 55px;
+        height: 55px;
+    }
+    
+    .crescent {
+        width: 42px;
+        height: 42px;
+    }
+    
+    .crescent::before {
+        width: 34px;
+        height: 34px;
+    }
+    
+    .lantern {
+        width: 30px;
+        height: 55px;
+    }
+    
+    .lantern-body {
+        width: 30px;
+        height: 40px;
+    }
+    
+    .small-star {
+        width: 12px;
+        height: 12px;
+    }
+    
+    /* Adjust positions for mobile */
+    .ketupat-float-1 {
+        top: 12%;
+        left: 5%;
+    }
+    
+    .ketupat-float-2 {
+        top: 20%;
+        right: 5%;
+    }
+    
+    .ketupat-float-3 {
+        bottom: 18%;
+        left: 8%;
+    }
+    
+    .ketupat-float-4 {
+        bottom: 12%;
+        right: 5%;
+    }
+    
+    .moon-float-1 {
+        top: 8%;
+        right: 12%;
+    }
+    
+    .moon-float-2 {
+        bottom: 22%;
+        left: 7%;
+    }
+    
+    .lantern-1 {
+        top: 4%;
+        left: 15%;
+    }
+    
+    .lantern-2 {
+        top: 6%;
+        right: 20%;
+    }
+    
+    .click-instruction {
+        bottom: 30px;
+    }
+    
+    .click-instruction p {
+        font-size: 16px;
+        padding: 10px 20px;
+    }
+
+    /* Ornamen responsive */
+    .outer-ornament {
+        width: 60px;
+        height: 60px;
+    }
+
+    .inner-ornament {
+        width: 50px;
+        height: 50px;
+    }
+
+    .decorative-line {
+        width: 250px;
+        height: 50px;
+    }
+
+    .top-line {
+        top: -35px;
+    }
+
+    .bottom-line {
+        bottom: -35px;
+    }
+
+    .outer-top-left {
+        top: -8px;
+        left: -8px;
+    }
+
+    .outer-top-right {
+        top: -8px;
+        right: -8px;
+    }
+
+    .outer-bottom-left {
+        bottom: -8px;
+        left: -8px;
+    }
+
+    .outer-bottom-right {
+        bottom: -8px;
+        right: -8px;
+    }
+
+    .inner-top-left {
+        top: 20px;
+        left: 20px;
+    }
+
+    .inner-top-right {
+        top: 20px;
+        right: 20px;
+    }
+
+    .inner-bottom-left {
+        bottom: 20px;
+        left: 20px;
+    }
+
+    .inner-bottom-right {
+        bottom: 20px;
+        right: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .outer-ornament {
+        width: 50px;
+        height: 50px;
+    }
+
+    .inner-ornament {
+        width: 40px;
+        height: 40px;
+    }
+
+    .decorative-line {
+        width: 200px;
+        height: 45px;
+    }
+
+    .top-line {
+        top: -30px;
+    }
+
+    .bottom-line {
+        bottom: -30px;
+    }
+
+    .center-symbol {
+        width: 90px;
+        height: 90px;
+    }
+
+    .outer-top-left {
+        top: -6px;
+        left: -6px;
+    }
+
+    .outer-top-right {
+        top: -6px;
+        right: -6px;
+    }
+
+    .outer-bottom-left {
+        bottom: -6px;
+        left: -6px;
+    }
+
+    .outer-bottom-right {
+        bottom: -6px;
+        right: -6px;
+    }
+
+    .inner-top-left {
+        top: 15px;
+        left: 15px;
+    }
+
+    .inner-top-right {
+        top: 15px;
+        right: 15px;
+    }
+
+    .inner-bottom-left {
+        bottom: 15px;
+        left: 15px;
+    }
+
+    .inner-bottom-right {
+        bottom: 15px;
+        right: 15px;
+    }
+}
